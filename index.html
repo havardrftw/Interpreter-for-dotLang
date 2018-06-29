@@ -1,0 +1,105 @@
+<html>
+
+    <head>  
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+            <meta charset="UTF-8">
+            <title>dotLang - interpreter</title>
+
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">    
+            <script src="start.js"></script>
+                
+    </head>
+    <body>
+           
+        <div id="repl" class="container">
+                <h2 style="background:rgb(92, 123, 143); padding:3px; color:white">Interpreter for dotLang.</h2>
+
+                <textarea id='mainRepl' placeholder="Write statement here" rows="20" cols="50"></textarea><br>
+                <button id='sub' onclick='addStatements()'> Add statement </button><button id='sub' onclick='program.interpret()'> Evaluate program </button>
+                <button onclick="location.reload()">Reset</button>
+        
+                <div id="eval" class="well"><h5>Evaluator</h5>
+            
+                End position: - -
+            
+                </div>       
+                <table style="background-color:rgb(106, 102, 102)" class="table table-bordered" id="grid" > </table>
+        <div>
+
+        <h4> Description</h4>
+               <p>
+                dotLang is a simple programming language for the more or less meaningless task of moving a dot around in a 15*15 grid. This is mainly the last part of an interpreter for the language - the evaluator, so the syntax is closely related to the tokenization process and the creation of the abstract syntax tree. 
+            </p>
+            <p>
+                A Program consists of optional declarations (with assignment) of variables, a begin statement with initial placement of the dot,  then the statements that can consist of ALA (as-long-as) statements, move statements or assignments, and lastly an end statement that will initiate the evaluation of the whole program. See subsection "Grammar".
+                </p>
+                <p>
+                You can add statement for statement, or the whole program at once (with one statement pr. line), before evaluating the program. It is okay for the dot to roam outside of the borders of the grid, or even to start outside of it, as long as its end position is inside of the bounds. Hit the reset button before starting a new programming session.
+            </p>
+
+            Note that your variable names need to be an element of the set {'x', 'y', 'i', 'k', 'j'}, and remember to remove all whitespace at the end of statements. <br>
+                <h4> Syntax </h4>
+               Statements and expressions in dotLang are on the form '(statement | expression) of .'. You should be able du deduce the syntax and structure from the following example programs:
+
+            
+        <div class="well">
+            Declaration of Id of 'i' . and Num of 1 . . <br>
+            Declaration of Id of 'j' . and Num of 8 . .<br>
+            Begin of Num of 23 . and Num of 6 . .<br>
+            North of Mult of Num of 3 . and Variable of Id of 'i' . . . .<br>
+            East of Num of 15 . .<br>
+            South of Num of 4 . .<br>
+            West of Add of Add of Mult of Num of 2 . and Variable of Id of 'i' . . . and Mult of Num of 3 . and Variable of Id of 'j' . . . . and Num of 5 . . .<br>
+            End of .<br><br>
+            <button onclick="testProgramOne()">Test this program</button>
+
+        </div>
+
+        <div class="well">
+            Declaration of Id of 'i' . and Num of 5 . . <br>
+            Declaration of Id of 'j' . and Num of 3 . . <br>
+            Begin of Num of 23 . and Num of 6 . . <br>
+            North of Mult of Num of 3 . and Variable of Id of 'i' . . . .<br>
+            West of Num of 15 . .<br>
+            East of Num of 4 . .<br>
+            ALA of BoolExp of BoolOp of '>' . and Variable of Id of 'j' . . and Num of 0 . . and [ South of Variable of Id of 'j' . . . and Assignment of Id of 'j' . and Sub of Variable of Id of 'j' . . and Num of 1 . . . ] . <br>
+            End of .<br><br>
+            <button onclick="testProgramTwo()">Test this program</button>
+
+        </div>
+
+        <h4> Grammar</h4>
+        <div class="well">
+        Program ::= Declaration* Begin 'statement'* End <br><br>
+
+        'statement' ::= Begin | West | East | North | South | Assignment | ALA<br><br>
+
+        'expression' ::= Id, Num, Sub, Add, Mult, BoolExp, Variable<br><br>
+        
+        Declaration ::= Id Num<br><br>
+
+        Id ::= x element of 'varSet'<br><br>
+
+        ALA ::= BoolExp [ 'statement'+ ]<br><br>
+
+        Begin ::= Num Num<br><br>
+
+        Assignment ::= Variable 'expression'<br><br>
+
+        Variable ::= Id<br><br>
+
+        (West | East | North | South) ::= 'expression'<br><br>
+
+        (Sub | Add | Mult) ::= 'expression' 'expression'<br><br>
+
+        BoolExp ::= BoolOp<br><br>
+
+        BoolOp ::= '>' | '<' | '=='<br><br>
+
+        Num ::= int<br><br>
+
+        'varSet' ::= 'x' | 'y' | 'i' | 'k' | 'j'
+        </div>
+      
+    </body>
+</html>
